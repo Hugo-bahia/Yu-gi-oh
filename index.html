@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>YuGi Duel Arena</title><link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div id="app">
+  <div id="menu" class="screen active">
+    <div class="logo"><span>DUEL</span><b>ARENA</b></div><p class="subtitle">CARD DUEL • TOUCH EDITION</p>
+    <div class="menu-card">
+      <button class="main-btn" onclick="startBot()">🤖 DUELO CONTRA BOT</button>
+      <div class="difficulty"><button data-diff="easy" class="selected">FÁCIL</button><button data-diff="normal">NORMAL</button><button data-diff="hard">DIFÍCIL</button><button data-diff="expert">MESTRE</button></div>
+      <button class="main-btn secondary" onclick="startTwoPlayers()">👥 2 JOGADORES</button>
+      <button class="small-btn" onclick="showDeck()">🃏 VER CARTAS</button>
+    </div><p class="notice">Fan-made prototype • cartas dos packs enviados</p>
+  </div>
+
+  <div id="deckScreen" class="screen"><header><button class="back" onclick="backMenu()">←</button><h2>ARSENAL DE CARTAS</h2><span id="cardCount"></span></header><input id="search" class="search" placeholder="Pesquisar carta..." oninput="renderDeck()"><div id="deckGrid" class="deck-grid"></div></div>
+
+  <div id="duel" class="screen duel-screen">
+    <div class="duel-hud">
+      <div class="profile opponent-profile"><div class="avatar avatar-bot">BOT</div><div class="profile-text"><b id="oppName">BOT</b><span>LP</span></div><div class="lpbox"><strong id="oppLP">4000</strong><div class="lpbar"><i id="oppBar"></i></div></div></div>
+      <div class="turn-center"><span id="turnLabel">TURNO 1</span><b id="phaseLabel">MAIN PHASE 1</b></div>
+      <button class="icon menu-icon" onclick="confirmExit()">☰</button>
+    </div>
+
+    <div class="arena-shell">
+      <aside class="left-panel">
+        <div class="panel-title">CARTA EM FOCO</div>
+        <div id="cardInspector" class="card-inspector"><div class="inspector-empty">Selecione uma carta</div></div>
+        <div class="panel-tabs"><span class="active">Card</span><span>Log</span><span>Functions</span></div>
+        <div id="log" class="battle-log"></div>
+      </aside>
+
+      <main class="arena-board">
+        <div class="stadium-lights"></div>
+        <div id="virtualBattle" class="virtual-battle hidden"><div class="virtual-ring"></div><div class="battle-monster battle-attacker" id="battleAttacker"></div><div class="battle-monster battle-target" id="battleTarget"></div><div class="battle-impact" id="battleImpact">⚡</div><div class="battle-damage" id="battleDamage"></div><div class="battle-caption" id="battleCaption">ATAQUE!</div></div>
+
+        <section class="board-side bot-side">
+          <div class="side-label">CAMPO DO OPONENTE</div>
+          <div class="deck-pile deck-top" id="oppDeckPile" title="Monte do oponente"><div class="deck-back"></div><span>DECK</span><b id="oppDeckCount">30</b></div>
+          <div class="graveyard-pile grave-top" id="oppGrave" title="Cemitério do oponente"><div class="grave-back"></div><span>GY</span><b id="oppGraveCount">0</b></div>
+          <div class="zones" id="oppZones"></div>
+          <div class="hand back-cards" id="oppHand"></div>
+        </section>
+
+        <div class="board-center"><div class="holo-line"></div><div class="center-label">DUEL ARENA</div><div class="slot-count">12 MÓDULOS • 6 + 6</div></div>
+
+        <section class="board-side player-side">
+          <div class="side-label player-label">SEU CAMPO</div>
+          <div class="hand" id="myHand"></div>
+          <div class="zones" id="myZones"></div>
+          <div class="graveyard-pile grave-bottom" id="myGrave" title="Seu cemitério"><div class="grave-back"></div><span>GY</span><b id="myGraveCount">0</b></div>
+          <div class="deck-pile deck-bottom" id="myDeckPile" title="Seu monte"><div class="deck-back"></div><span>DECK</span><b id="myDeckCount">30</b></div>
+        </section>
+      </main>
+
+      <aside class="right-panel">
+        <div class="panel-title">DUEL OPTIONS</div>
+        <button onclick="nextPhase()">FASE →</button><button onclick="directAttack()">⚡ ATAQUE DIRETO</button><button onclick="endTurn()">ENCERRAR TURNO</button>
+        <div class="phase-list"><span>DRAW</span><span>MAIN</span><span>BATTLE</span><span>END</span></div>
+      </aside>
+    </div>
+
+    <div class="card-actions hidden" id="cardActions"><div class="selected-card-name" id="selectedCardName">CARTA</div><button onclick="placeSelected(true)">▲ FACE CIMA</button><button onclick="placeSelected(false)">▼ FACE BAIXO</button><button class="cancel" onclick="cancelSelection()">CANCELAR</button></div>
+
+    <div class="bottom-hud"><div class="profile player-profile"><div class="avatar avatar-player">P1</div><div class="profile-text"><b id="myName">JOGADOR 1</b><span>LP</span></div><div class="lpbox"><strong id="myLP">4000</strong><div class="lpbar"><i id="myBar"></i></div></div></div><div class="status-chip">TOQUE NAS CARTAS PARA JOGAR</div></div>
+    <div class="modal hidden" id="waitModal"><div class="modal-card"><h2>VEZ DO OUTRO JOGADOR</h2><p>Entregue o aparelho ao adversário.</p><button class="main-btn" onclick="closeWait()">CONTINUAR</button></div></div>
+  </div>
+</div><script src="js/game.js"></script>
+</body></html>
